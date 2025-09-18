@@ -51,3 +51,5 @@
 ---
 
 _Always learning, open for collaboration!_
+
+<img src="https://github.com/Kyugito666/Kyugito666/blob/main/assets/duong2.gif" width="350"/>
