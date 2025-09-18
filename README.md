@@ -1,4 +1,4 @@
-<img align="right" src="https://avatars.githubusercontent.com/u/your-github-id?v=4" width="120">
+<img align="right" src="https://avatars.githubusercontent.com/u/your-github-id?v=4" width="20">
 
 # Hi, I'm Kyugito666 👋
 
