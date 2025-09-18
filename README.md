@@ -41,9 +41,8 @@
 
 ### 🚀 Highlighted Projects
 
-- **[nexus-cli](https://github.com/Kyugito666/nexus-cli)**: A powerful Command Line Interface (CLI) tool for managing Nexus repositories.
-- **[Fhenix-Auto](https://github.com/Kyugito666/Fhenix-Auto)**: Automation scripts for streamlining operations on the Fhenix network.
-- **[Pharos-Auto-Bot](https://github.com/Kyugito666/Pharos-Auto-Bot)**: A versatile bot designed to automate tasks within the Pharos ecosystem.
+- **[🎨 dummy-contrib](https://github.com/Kyugito666/dummy-contrib)**: A simple script to 'paint' and create artistic patterns on your GitHub contribution graph. <br>
+  <a href="https://github.com/Kyugito666/dummy-contrib" target="_blank"><img src="https://img.shields.io/badge/View%20on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="View on GitHub"></a>
 
 ---
 
