@@ -23,12 +23,6 @@ jobs:
           comment_tag_name: "LATEST_REPOS"
           template: "- **[$title]($url)**: $description"
 
-      - name: Debug Tampilkan isi README
-        run: |
-          echo "--- Isi README.md SETELAH diubah oleh workflow ---"
-          cat README.md
-          echo "----------------------------------------------------"
-
       - name: Commit and push if changed
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
