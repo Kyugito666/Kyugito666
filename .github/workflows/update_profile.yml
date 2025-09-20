@@ -29,32 +29,38 @@ jobs:
 
           # Hasilkan konten baru untuk Proyek Terbaru
           UPDATED_WITH_LATEST=$(awk -v replacement="$LATEST_REPOS_LIST" '
+            BEGIN {
+              p=1
+            }
             // {
               print ""
               print replacement
-              in_block=1
+              p=0
             }
             // {
               print ""
-              in_block=0
+              p=1; next
             }
-            !in_block {
+            p {
               print
             }
           ' <<< "$CURRENT_README")
 
           # Hasilkan konten final dengan Proyek Terpopuler
           FINAL_README=$(awk -v replacement="$POPULAR_REPOS_LIST" '
+            BEGIN {
+              p=1
+            }
             // {
               print ""
               print replacement
-              in_block=1
+              p=0
             }
             // {
               print ""
-              in_block=0
+              p=1; next
             }
-            !in_block {
+            p {
               print
             }
           ' <<< "$UPDATED_WITH_LATEST")
