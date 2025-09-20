@@ -45,6 +45,10 @@
 
 ---
 
+### 🏆 Proyek Terpopuler
+
+---
+
 ### 🔗 Profil GitHub Lainnya
 
 <table align="center" style="border: none;">
