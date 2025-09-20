@@ -11,7 +11,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Update README with latest repositories
         uses: gautamkrishnar/blog-post-workflow@v1
         with:
@@ -20,7 +22,9 @@ jobs:
           readme_path: 'README.md'
           comment_tag_name: "LATEST_REPOS"
           template: "- **[$title]($url)**: $description"
-          # Baris tambahan untuk memaksa commit
-          commit_message: "docs: update latest repos in README"
-          committer_name: "GitHub Actions Bot"
-          committer_email: "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(readme): update latest repos"
+          file_pattern: README.md
