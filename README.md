@@ -1,5 +1,8 @@
 <div align="center">
-  <img src="https://avatars.githubusercontent.com/Kyugito666" width="150" style="border-radius: 50%;"/>
+  <img src="https://raw.githubusercontent.com/Kyugito666/Kyugito666/main/assets/duong2.gif" width="400"/>
+</div>
+
+<div align="center">
   <h1>Hi, I'm Kyugito666 ☝️</h1>
   <h3>Automation Developer | Cloud & DevOps Enthusiast</h3>
   <p>Passionate about building efficient automation and scalable infrastructure.</p>
@@ -35,30 +38,29 @@
 
 ---
 
-### 🏆 Proyek Pilihan
+### 🏆 Trofi GitHub
 
 <p align="center">
-  <a href="https://github.com/Kyugito666/Fogo-Valiant-Bot">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Kyugito666&repo=Fogo-Valiant-Bot&theme=dracula&hide_border=true" />
-  </a>
-  <a href="https://github.com/Kyugito666/dummy-contrib">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Kyugito666&repo=dummy-contrib&theme=dracula&hide_border=true" />
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/Kyugito666/Wallet-Toolkit">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Kyugito666&repo=Wallet-Toolkit&theme=dracula&hide_border=true" />
-  </a>
-  <a href="https://github.com/Kyugito666/ProxySync">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Kyugito666&repo=ProxySync&theme=dracula&hide_border=true" />
-  </a>
+  <img src="https://github-profile-trophy.vercel.app/?username=Kyugito666&theme=dracula&no-frame=true&no-bg=true&margin-w=4" alt="GitHub Trophies"/>
 </p>
 
 ---
 
+### 📊 Statistik & Grafik
+
+<table>
+  <tr>
+    <td valign="top" width="50%">
+      <img src="https://github-readme-stats.vercel.app/api?username=Kyugito666&show_icons=true&theme=dracula" alt="Kyugito666's GitHub Stats"/>
+    </td>
+    <td valign="top" width="50%">
+      <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Kyugito666&layout=compact&theme=dracula&hide_border=true" alt="Top Languages"/>
+    </td>
+  </tr>
+</table>
+
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Kyugito666&layout=compact&theme=dracula&hide_border=true" alt="Top Languages"/>
+  <img src="https://github-readme-streak-stats.herokuapp.com?user=Kyugito666&theme=dracula&hide_border=true&border_radius=5" alt="GitHub Streak"/>
 </p>
 
 ---
@@ -81,18 +83,6 @@
     </td>
   </tr>
 </table>
-
----
-
-## 📊 Statistik GitHub
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Kyugito666&show_icons=true&theme=dracula" alt="Kyugito666's GitHub Stats"/>
-</p>
-
----
- <div align="center">
-  <img src="https://raw.githubusercontent.com/Kyugito666/Kyugito666/main/assets/duong2.gif" width="400"/>
-</div>
 
 ---
 
