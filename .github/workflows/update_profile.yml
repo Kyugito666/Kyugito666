@@ -14,57 +14,55 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Update README sections
+      - name: Update project lists
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Ambil daftar 5 repo terbaru
-          LATEST_REPOS_LIST=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/users/Kyugito666/repos?sort=created&direction=desc&per_page=5" | jq -r '.[] | "- **[\(.name)](\(.html_url))**: \(.description // "No description provided.")"')
+          # Ambil daftar 5 repo terbaru, bersihkan deskripsi dari newline
+          LATEST_REPOS_LIST=$(gh repo list Kyugito666 --sort=created --limit 5 --json name,url,description | jq -r '.[] | .description |= sub("[\\r\\n]+"; " "; "g") | "- **[\(.name)](\(.url))**: \(.description // "No description provided.")"')
           
-          # Ambil daftar 5 repo terpopuler
-          POPULAR_REPOS_LIST=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/users/Kyugito666/repos?sort=stars&direction=desc&per_page=5" | jq -r '.[] | "- **[\(.name)](\(.html_url))**: \(.description // "No description provided.") ⭐ \(.stargazers_count)"')
+          # Ambil daftar 5 repo terpopuler, bersihkan deskripsi dari newline
+          POPULAR_REPOS_LIST=$(gh repo list Kyugito666 --sort=stars --limit 5 --json name,url,description,stargazersCount | jq -r '.[] | .description |= sub("[\\r\\n]+"; " "; "g") | "- **[\(.name)](\(.url))**: \(.description // "No description provided.") ⭐ \(.stargazersCount)"')
 
-          # Baca konten README ke dalam variabel
-          README_CONTENT=$(cat README.md)
+          # Simpan konten README saat ini
+          CURRENT_README=$(cat README.md)
 
-          # Ganti blok Proyek Terbaru
-          NEW_README_CONTENT=$(echo -e "${README_CONTENT}" | awk -v replacement="${LATEST_REPOS_LIST}" '
-            BEGIN {
-              p=1
+          # Hasilkan konten baru untuk Proyek Terbaru
+          UPDATED_WITH_LATEST=$(awk -v replacement="$LATEST_REPOS_LIST" '
+            BEGIN {in_block=0}
+            // {
+              print; 
+              print replacement; 
+              in_block=1
             }
             // {
-              print ""
-              print replacement
-              p=0
+              print; 
+              in_block=0
             }
-            // {
-              print ""
-              p=1; next
-            }
-            p {
+            !in_block {
               print
             }
-          ')
+          ' <<< "$CURRENT_README")
 
-          # Ganti blok Proyek Terpopuler
-          FINAL_README_CONTENT=$(echo -e "${NEW_README_CONTENT}" | awk -v replacement="${POPULAR_REPOS_LIST}" '
-            BEGIN {
-              p=1
+          # Hasilkan konten final dengan Proyek Terpopuler
+          FINAL_README=$(awk -v replacement="$POPULAR_REPOS_LIST" '
+            BEGIN {in_block=0}
+            // {
+              print; 
+              print replacement; 
+              in_block=1
             }
             // {
-              print ""
-              print replacement
-              p=0
+              print; 
+              in_block=0
             }
-            // {
-              print ""
-              p=1; next
-            }
-            p {
+            !in_block {
               print
             }
-          ')
-
-          # Tulis konten final kembali ke file
-          echo -e "${FINAL_README_CONTENT}" > README.md
+          ' <<< "$UPDATED_WITH_LATEST")
+          
+          # Tulis konten final ke file
+          echo "$FINAL_README" > README.md
 
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
