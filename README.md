@@ -46,6 +46,15 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/Kyugito666/Wallet-Toolkit">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Kyugito666&repo=Wallet-Toolkit&theme=dracula&hide_border=true" />
+  </a>
+  <a href="https://github.com/Kyugito666/ProxySync">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Kyugito666&repo=ProxySync&theme=dracula&hide_border=true" />
+  </a>
+</p>
+
 ---
 
 <p align="center">
