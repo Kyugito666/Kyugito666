@@ -35,17 +35,22 @@
 
 ---
 
+### 🏆 Proyek Pilihan
+
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Kyugito666&layout=compact&theme=dracula&hide_border=true" alt="Top Languages"/>
+  <a href="https://github.com/Kyugito666/Fogo-Valiant-Bot">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Kyugito666&repo=Fogo-Valiant-Bot&theme=dracula&hide_border=true" />
+  </a>
+  <a href="https://github.com/Kyugito666/dummy-contrib">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=Kyugito666&repo=dummy-contrib&theme=dracula&hide_border=true" />
+  </a>
 </p>
 
 ---
 
-### 🚀 Proyek Terbaru
-
----
-
-### 🏆 Proyek Terpopuler
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Kyugito666&layout=compact&theme=dracula&hide_border=true" alt="Top Languages"/>
+</p>
 
 ---
 
