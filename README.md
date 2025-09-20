@@ -28,28 +28,27 @@
 ### 💻 Tech Stack & Tools
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript"/>
-  <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP"/>
-  <img src="https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS"/>
-  <img src="https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" alt="GCP"/>
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/>
-  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="CI/CD"/>
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=python,js,php,aws,gcp,docker,githubactions&theme=dark" />
+  </a>
 </p>
 
 ---
 
-### 🚀 Highlighted Projects
-
-- **[🎨 dummy-contrib](https://github.com/Kyugito666/dummy-contrib)**: A simple script to 'paint' and create artistic patterns on your GitHub contribution graph. <br>
-  <a href="https://github.com/Kyugito666/dummy-contrib" target="_blank"><img src="https://img.shields.io/badge/View%20on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="View on GitHub"></a>
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Kyugito666&layout=compact&theme=dracula&hide_border=true" alt="Top Languages"/>
+</p>
 
 ---
 
-### 🔗 Other GitHub Profiles
+### 🚀 Proyek Terbaru
 
-<table align="center">
-  <tr border: none;>
+---
+
+### 🔗 Profil GitHub Lainnya
+
+<table align="center" style="border: none;">
+  <tr style="border: none;">
     <td width="50%" align="center">
       <a href="https://github.com/KofuLs">
         <img src="https://avatars.githubusercontent.com/KofuLs" width="100" style="border-radius: 50%;"/><br/>
@@ -67,8 +66,10 @@
 
 ---
 
-## 📊 GitHub Stats
-![Kyugito666's GitHub Stats](https://github-readme-stats.vercel.app/api?username=Kyugito666&show_icons=true&theme=radical)
+## 📊 Statistik GitHub
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=Kyugito666&show_icons=true&theme=dracula" alt="Kyugito666's GitHub Stats"/>
+</p>
 
 ---
  <div align="center">
