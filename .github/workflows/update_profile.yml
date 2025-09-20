@@ -14,99 +14,53 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Update README
+      - name: Update project lists
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python - <<'END_OF_PYTHON_SCRIPT'
-          import os
-          import json
-          import re
-          import subprocess
-
-          def run_command(command):
-              result = subprocess.run(command, capture_output=True, text=True, shell=True)
-              if result.returncode != 0:
-                  print(f"Error running command: {command}")
-                  print(f"Stderr: {result.stderr}")
-                  exit(1)
-              return result.stdout
-
-          def get_repos(sort_by):
-              sort_flag = "created" if sort_by == "latest" else "stars"
-              json_fields = "name,url,description"
-              if sort_by == "popular":
-                  json_fields += ",stargazersCount"
-              
-              command = f"gh repo list Kyugito666 --sort={sort_flag} --limit 5 --json {json_fields}"
-              json_output = run_command(command)
-              
-              try:
-                  return json.loads(json_output)
-              except json.JSONDecodeError:
-                  print("Error: Failed to decode JSON from gh command.")
-                  exit(1)
-
-          def format_repo_list(repos, list_type):
-              markdown_list = []
-              for repo in repos:
-                  description = repo.get("description") or "No description provided."
-                  description = ' '.join(description.splitlines())
-                  
-                  if list_type == "popular":
-                      stars = repo.get("stargazersCount", 0)
-                      markdown_list.append(f'- **[{repo["name"]}]({repo["url"]})**: {description} ⭐ {stars}')
-                  else:
-                      markdown_list.append(f'- **[{repo["name"]}]({repo["url"]})**: {description}')
-              return "\n".join(markdown_list)
-
-          def replace_block_in_file(file_path, block_name, new_content):
-              try:
-                  with open(file_path, 'r', encoding='utf-8') as f:
-                      content = f.read()
-              except FileNotFoundError:
-                  print(f"Error: {file_path} not found.")
-                  exit(1)
-              
-              start_tag = f""
-              end_tag = f""
-              
-              pattern = re.compile(f"({re.escape(start_tag)})(.*?)({re.escape(end_tag)})", re.DOTALL)
-              
-              if not pattern.search(content):
-                  print(f"Error: Tags for {block_name} not found in {file_path}.")
-                  exit(1)
-
-              new_block = f"{start_tag}\n{new_content}\n{end_tag}"
-              updated_content = pattern.sub(new_block, content)
-
-              with open(file_path, 'w', encoding='utf-8') as f:
-                  f.write(updated_content)
-
-          # --- Main script ---
-          print("Fetching latest repos...")
-          latest_repos = get_repos("latest")
-          latest_repos_md = format_repo_list(latest_repos, "latest")
-
-          print("Fetching popular repos...")
-          popular_repos = get_repos("popular")
-          popular_repos_md = format_repo_list(popular_repos, "popular")
+          # Ambil daftar 5 repo terbaru, bersihkan deskripsi dari newline
+          LATEST_REPOS_LIST=$(gh repo list Kyugito666 --sort=created --limit 5 --json name,url,description | jq -r '.[] | .description |= sub("[\\r\\n]+"; " "; "g") | "- **[\(.name)](\(.url))**: \(.description // "No description provided.")"')
           
-          if not latest_repos_md or not popular_repos_md:
-              print("Error: Generated repo lists are empty. Aborting update.")
-              exit(1)
-              
-          print("Updating README.md...")
-          replace_block_in_file("README.md", "LATEST_REPOS", latest_repos_md)
-          replace_block_in_file("README.md", "POPULAR_REPOS", popular_repos_md)
-          print("README.md updated successfully.")
+          # Ambil daftar 5 repo terpopuler, bersihkan deskripsi dari newline
+          POPULAR_REPOS_LIST=$(gh repo list Kyugito666 --sort=stars --limit 5 --json name,url,description,stargazersCount | jq -r '.[] | .description |= sub("[\\r\\n]+"; " "; "g") | "- **[\(.name)](\(.url))**: \(.description // "No description provided.") ⭐ \(.stargazersCount)"')
 
-          END_OF_PYTHON_SCRIPT
+          # Simpan konten README saat ini
+          CURRENT_README=$(cat README.md)
+
+          # Hasilkan konten baru untuk Proyek Terbaru
+          UPDATED_WITH_LATEST=$(awk -v replacement="$LATEST_REPOS_LIST" '
+            // {
+              print ""
+              print replacement
+              in_block=1
+            }
+            // {
+              print ""
+              in_block=0
+            }
+            !in_block {
+              print
+            }
+          ' <<< "$CURRENT_README")
+
+          # Hasilkan konten final dengan Proyek Terpopuler
+          FINAL_README=$(awk -v replacement="$POPULAR_REPOS_LIST" '
+            // {
+              print ""
+              print replacement
+              in_block=1
+            }
+            // {
+              print ""
+              in_block=0
+            }
+            !in_block {
+              print
+            }
+          ' <<< "$UPDATED_WITH_LATEST")
+          
+          # Tulis konten final ke file
+          echo "$FINAL_README" > README.md
 
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
