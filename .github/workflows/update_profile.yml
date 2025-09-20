@@ -1,0 +1,53 @@
+name: Update Profile README
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  update_readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Update Latest Repositories
+        run: |
+          # Ambil daftar 5 repo terbaru
+          LATEST_REPOS=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/users/Kyugito666/repos?sort=created&direction=desc&per_page=5" | jq -r '.[] | "- **[\(.name)](\(.html_url))**: \(.description)"')
+          
+          # Siapkan konten baru
+          LATEST_CONTENT="\n${LATEST_REPOS}\n"
+          
+          # Ganti blok di README.md
+          awk -v replacement="${LATEST_CONTENT}" '
+            BEGIN {p=1}
+            // {print replacement; p=0}
+            // {p=1; next}
+            p {print}
+          ' README.md > README.md.tmp && mv README.md.tmp README.md
+
+      - name: Update Popular Repositories
+        run: |
+          # Ambil daftar 5 repo terpopuler
+          POPULAR_REPOS=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/users/Kyugito666/repos?sort=stars&direction=desc&per_page=5" | jq -r '.[] | "- **[\(.name)](\(.html_url))**: \(.description) ⭐ \(.stargazers_count)"')
+
+          # Siapkan konten baru
+          POPULAR_CONTENT="\n${POPULAR_REPOS}\n"
+          
+          # Ganti blok di README.md
+          awk -v replacement="${POPULAR_CONTENT}" '
+            BEGIN {p=1}
+            // {print replacement; p=0}
+            // {p=1; next}
+            p {print}
+          ' README.md > README.md.tmp && mv README.md.tmp README.md
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(readme): auto-update latest and popular repos"
+          file_pattern: README.md
