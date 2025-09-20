@@ -6,30 +6,64 @@ on:
     - cron: '0 */6 * * *'
 
 jobs:
-  update_latest_repos:
+  update_readme:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: gautamkrishnar/blog-post-workflow@v1
-        with:
-          feed_list: "https://api.github.com/users/Kyugito666/repos?sort=created&direction=desc"
-          max_post_count: 5
-          comment_tag_name: "LATEST_REPOS"
-          template: "- **[$title]($url)**: $description"
-          commit_message: "docs(readme): update latest repos"
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-  update_popular_repos:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: gautamkrishnar/blog-post-workflow@v1
+      - name: Update project lists
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Ambil daftar 5 repo terbaru, bersihkan deskripsi dari newline
+          LATEST_REPOS_LIST=$(gh repo list Kyugito666 --sort=created --limit 5 --json name,url,description | jq -r '.[] | .description |= sub("[\\r\\n]+"; " "; "g") | "- **[\(.name)](\(.url))**: \(.description // "No description provided.")"')
+          
+          # Ambil daftar 5 repo terpopuler, bersihkan deskripsi dari newline
+          POPULAR_REPOS_LIST=$(gh repo list Kyugito666 --sort=stars --limit 5 --json name,url,description,stargazersCount | jq -r '.[] | .description |= sub("[\\r\\n]+"; " "; "g") | "- **[\(.name)](\(.url))**: \(.description // "No description provided.") ⭐ \(.stargazersCount)"')
+
+          # Simpan konten README saat ini
+          CURRENT_README=$(cat README.md)
+
+          # Hasilkan konten baru untuk Proyek Terbaru
+          UPDATED_WITH_LATEST=$(awk -v replacement="$LATEST_REPOS_LIST" '
+            // {
+              print ""
+              print replacement
+              in_block=1
+            }
+            // {
+              print ""
+              in_block=0
+            }
+            !in_block {
+              print
+            }
+          ' <<< "$CURRENT_README")
+
+          # Hasilkan konten final dengan Proyek Terpopuler
+          FINAL_README=$(awk -v replacement="$POPULAR_REPOS_LIST" '
+            // {
+              print ""
+              print replacement
+              in_block=1
+            }
+            // {
+              print ""
+              in_block=0
+            }
+            !in_block {
+              print
+            }
+          ' <<< "$UPDATED_WITH_LATEST")
+          
+          # Tulis konten final ke file
+          echo "$FINAL_README" > README.md
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          feed_list: "https://api.github.com/users/Kyugito666/repos?sort=stars&direction=desc"
-          max_post_count: 5
-          comment_tag_name: "POPULAR_REPOS"
-          template: "- **[$title]($url)**: $description ⭐ $stars"
-          commit_message: "docs(readme): update popular repos"
+          commit_message: "docs(readme): auto-update project lists"
+          file_pattern: README.md
