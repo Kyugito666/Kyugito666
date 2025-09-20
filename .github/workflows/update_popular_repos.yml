@@ -9,18 +9,16 @@ on:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    # Tambahkan blok izin ini
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Update README with popular repositories
         uses: gautamkrishnar/blog-post-workflow@v1
         with:
-          # URL feed dari repositori publik Anda, diurutkan berdasarkan bintang
           feed_list: "https://api.github.com/users/Kyugito666/repos?sort=stars&direction=desc"
-          # Jumlah maksimum repositori yang akan ditampilkan
           max_post_count: 5
-          # Path ke file README.md Anda
           readme_path: 'README.md'
-          # Tag komentar di README tempat daftar akan disisipkan
           comment_tag_name: "POPULAR_REPOS"
-          # Template untuk setiap item daftar, tambahkan bintang
           template: "- **[$title]($url)**: $description ⭐ $stars"
