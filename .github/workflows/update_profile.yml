@@ -55,7 +55,6 @@ jobs:
           def format_repo_list(repos, list_type):
               markdown_list = []
               for repo in repos:
-                  # Bersihkan deskripsi dari newline
                   description = repo.get("description") or "No description provided."
                   description = ' '.join(description.splitlines())
                   
