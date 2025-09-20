@@ -14,40 +14,60 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Update Latest Repositories
+      - name: Update README sections
         run: |
           # Ambil daftar 5 repo terbaru
-          LATEST_REPOS=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/users/Kyugito666/repos?sort=created&direction=desc&per_page=5" | jq -r '.[] | "- **[\(.name)](\(.html_url))**: \(.description)"')
+          LATEST_REPOS_LIST=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/users/Kyugito666/repos?sort=created&direction=desc&per_page=5" | jq -r '.[] | "- **[\(.name)](\(.html_url))**: \(.description // "No description provided.")"')
           
-          # Siapkan konten baru
-          LATEST_CONTENT="\n${LATEST_REPOS}\n"
-          
-          # Ganti blok di README.md
-          awk -v replacement="${LATEST_CONTENT}" '
-            BEGIN {p=1}
-            // {print replacement; p=0}
-            // {p=1; next}
-            p {print}
-          ' README.md > README.md.tmp && mv README.md.tmp README.md
-
-      - name: Update Popular Repositories
-        run: |
           # Ambil daftar 5 repo terpopuler
-          POPULAR_REPOS=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/users/Kyugito666/repos?sort=stars&direction=desc&per_page=5" | jq -r '.[] | "- **[\(.name)](\(.html_url))**: \(.description) ⭐ \(.stargazers_count)"')
+          POPULAR_REPOS_LIST=$(curl -s -H "Accept: application/vnd.github.v3+json" "https://api.github.com/users/Kyugito666/repos?sort=stars&direction=desc&per_page=5" | jq -r '.[] | "- **[\(.name)](\(.html_url))**: \(.description // "No description provided.") ⭐ \(.stargazers_count)"')
 
-          # Siapkan konten baru
-          POPULAR_CONTENT="\n${POPULAR_REPOS}\n"
-          
-          # Ganti blok di README.md
-          awk -v replacement="${POPULAR_CONTENT}" '
-            BEGIN {p=1}
-            // {print replacement; p=0}
-            // {p=1; next}
-            p {print}
-          ' README.md > README.md.tmp && mv README.md.tmp README.md
+          # Baca konten README ke dalam variabel
+          README_CONTENT=$(cat README.md)
+
+          # Ganti blok Proyek Terbaru
+          NEW_README_CONTENT=$(echo -e "${README_CONTENT}" | awk -v replacement="${LATEST_REPOS_LIST}" '
+            BEGIN {
+              p=1
+            }
+            // {
+              print ""
+              print replacement
+              p=0
+            }
+            // {
+              print ""
+              p=1; next
+            }
+            p {
+              print
+            }
+          ')
+
+          # Ganti blok Proyek Terpopuler
+          FINAL_README_CONTENT=$(echo -e "${NEW_README_CONTENT}" | awk -v replacement="${POPULAR_REPOS_LIST}" '
+            BEGIN {
+              p=1
+            }
+            // {
+              print ""
+              print replacement
+              p=0
+            }
+            // {
+              print ""
+              p=1; next
+            }
+            p {
+              print
+            }
+          ')
+
+          # Tulis konten final kembali ke file
+          echo -e "${FINAL_README_CONTENT}" > README.md
 
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "docs(readme): auto-update latest and popular repos"
+          commit_message: "docs(readme): auto-update project lists"
           file_pattern: README.md
