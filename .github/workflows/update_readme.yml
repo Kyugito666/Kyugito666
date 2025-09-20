@@ -2,14 +2,12 @@ name: Update README with Latest Repos
 
 on:
   schedule:
-    # Menjalankan setiap 6 jam
     - cron: '0 */6 * * *'
   workflow_dispatch:
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    # Tambahkan blok izin ini
     permissions:
       contents: write
     steps:
@@ -22,3 +20,7 @@ jobs:
           readme_path: 'README.md'
           comment_tag_name: "LATEST_REPOS"
           template: "- **[$title]($url)**: $description"
+          # Baris tambahan untuk memaksa commit
+          commit_message: "docs: update latest repos in README"
+          committer_name: "GitHub Actions Bot"
+          committer_email: "41898282+github-actions[bot]@users.noreply.github.com"
