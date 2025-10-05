@@ -1,0 +1,64 @@
+name: Update README with Latest Tech Stack
+
+on:
+  schedule:
+    # Runs every day at 00:00 UTC (07:00 WIB)
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # Allows manual trigger
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/update-readme.yml'
+      - 'update_readme.py'
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+      
+      - name: Update README
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python update_readme.py
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --quiet README.md || echo "changed=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "🤖 Auto-update tech stack [skip ci]"
+          git push
+      
+      - name: Summary
+        run: |
+          if [ "${{ steps.check_changes.outputs.changed }}" == "true" ]; then
+            echo "✅ README updated with latest tech stack!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No changes detected in tech stack." >> $GITHUB_STEP_SUMMARY
+          fi
